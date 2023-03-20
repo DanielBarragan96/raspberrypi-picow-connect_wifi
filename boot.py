@@ -13,5 +13,5 @@ if not wlan.isconnected():
 astronauts = urequests.get("http://api.open-notify.org/astros.json").json()
 number = astronauts['number']
 for i in range(number):
-    print(astronauts['people'][i]['name'])
+    print(astronauts['people'][i]['craft'] + ": " + astronauts['people'][i]['name'])
 
