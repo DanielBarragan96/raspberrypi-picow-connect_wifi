@@ -1,15 +1,17 @@
-import machine
-import utime
+import network
+import urequests
+import os
+import sys
 
-led = machine.Pin("LED", machine.Pin.OUT)
-led_pin = machine.Pin(25, machine.Pin.OUT)
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
 
-while True:
-    led_pin.value(1)
-    led.on()
-    print("ON")
-    utime.sleep(2)
-    led_pin.value(0)
-    led.off()
-    print("OFF")
-    utime.sleep(2)
+if not wlan.isconnected():
+    wlan.connect(os.environ['SSID'], os.environ['PASSWORD'])
+    print("wlan is connected" if wlan.isconnected() else "wlan error")
+
+astronauts = urequests.get("http://api.open-notify.org/astros.json").json()
+number = astronauts['number']
+for i in range(number):
+    print(astronauts['people'][i]['name'])
+
